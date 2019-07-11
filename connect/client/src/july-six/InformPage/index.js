@@ -3,8 +3,12 @@ import 'antd/dist/antd.css';
 import { Tabs } from 'antd';
 import axios from 'axios'
 
-import EditInform from '../EditInform'
+import EditInform from '../PostInform'
 import InformTable from '../InformTable'
+
+// this page allow you to 1.post an inform and 2.view informs that have been posted
+// this page use two components 1.'EditInform' and 2.'InformTable'
+// use two tabs to seperate these two components
 
 axios.defaults.baseURL = 'http://192.168.1.200:52674'
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
@@ -18,6 +22,9 @@ function callback(key) {
 
 function InformPage() {
 
+
+    // define the variables and functions that can be passed to its child component
+
     const [informs, setInforms] = useState([])
 
     const [newTitle, setNewTitle] = useState('')
@@ -29,18 +36,22 @@ function InformPage() {
     const handleContent = (props) => {
         setNewContent(props)
     }
-    const clearTitle = (props) => {
+    const clearTitle = () => {
         setNewTitle('')
     }
-    const clearContent = (props) => {
+    const clearContent = () => {
         setNewContent('')
     }
 
+    //debug
+    const handleInforms = (props) => {
+        setInforms(props)
+    }
+
+
     useEffect(() => {
-        // let data = {
-        //     url: "/api/actors",
-        //     method: "get"
-        // }
+
+        // get data from backend
 
         const params = new URLSearchParams();
         params.append('id', '00');
@@ -52,6 +63,7 @@ function InformPage() {
             url: '/api/search_post',
             data: params
         }).then(res => {
+            console.log('total')
             console.log(res.data)
             setInforms(res.data)
         }).catch(err => {
@@ -76,6 +88,8 @@ function InformPage() {
                         handleContent={handleContent}
                         clearTitle={clearTitle}
                         clearContent={clearContent}
+                        // debug
+                        handleInforms={handleInforms}
                     />
                 </TabPane>
             </Tabs>

@@ -6,6 +6,9 @@ import { Layout, Menu, Icon } from 'antd';
 const { SubMenu } = Menu;
 const { Sider } = Layout;
 
+// use 'link' from 'react-router-dom'
+// by clicking the navbar, you can be leading to different pages
+
 function SideNav() {
     return (
         <Sider width={200} style={{ background: '#fff' }}>
@@ -36,14 +39,10 @@ function SideNav() {
                         </Link>
                     </Menu.Item>
                     <Menu.Item key="1">
-                        <Link to="/info">`
+                        <Link to="/info">
                             Edit Info
                         </Link>
                     </Menu.Item>
-
-                        {/* <Menu.Item key="1">option1</Menu.Item>
-                        <Menu.Item key="2">option2</Menu.Item>
-                        <Menu.Item key="3">option3</Menu.Item> */}
 
                 </SubMenu>
 

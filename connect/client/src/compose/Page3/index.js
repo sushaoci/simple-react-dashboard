@@ -5,7 +5,7 @@ import { Layout } from 'antd';
 
 import SideNav from '../SideNav'
 
-import EditInfo from '../../july-six/EditInfo'
+import EditInfo from '../../july-six/EditUserInfo'
 
 const { Header, Content, Footer } = Layout;
 

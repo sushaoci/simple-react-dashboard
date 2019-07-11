@@ -2,6 +2,8 @@ import React, { Fragment, useState, useEffect } from 'react'
 import MaterialTable from 'material-table'
 import axios from 'axios'
 
+// this page allow you to appoint a administor and turn a administor to a common user
+
 axios.defaults.baseURL = 'http://192.168.1.200:52674'
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 axios.defaults.headers.get['Content-Type'] = 'application/json; charset=utf-8';
@@ -18,18 +20,13 @@ function AdminTable() {
     });
 
     useEffect(() => {
-        // let data = {
-        //     url: "/api/actors",
-        //     method: "get"
-        // }
 
         axios.post('/api/show_contentAdmin_list')
             .then(res => {
                 const od = res.data.admins
                 // console.log(od)
                 setAdmins({ ...admins, data: od })
-                // console.log(admins)
-
+                // console.log(admins.data)
             }).catch(err => {
                 console.log(err)
             })
@@ -55,56 +52,43 @@ function AdminTable() {
 
                                 const params = new URLSearchParams();
                                 params.append('admin_id', newData.admin_id);
-                                params.append('selected_id', newData.selected_id);
+                                params.append('selected_id', newData.user_id);
                                 params.append('section_id', newData.section_id);
                                 axios({
                                     method: 'post',
                                     url: '/api/appoint',
                                     data: params
                                 }).then(res => {
-                                    console.log(res.data)
+                                    return (res.status)
+                                }).then((status) => {
+                                    // console.log('>>>')
+                                    // console.log(status)
 
-                                    // 方法1
-                                    // if (res.data.status) {
-                                    //     const data = [...admins.data];
-                                    //     data.push(newData);
-                                    //     setAdmins({ ...admins, data });
-                                    // }
-                                });
-
-                                // 方法2
-                                axios.post('/api/show_contentAdmin_list')
-                                    .then(res => {
-                                        const od = res.data.admins
-                                        // console.log(od)
-                                        setAdmins({ ...admins, data: od })
-                                        // console.log(admins)
-
-                                    }).catch(err => {
-                                        console.log(err)
-                                    })
+                                    if (status === 200) {
+                                        //debug
+                                        axios({
+                                            method: 'post',
+                                            url: '/api/show_contentAdmin_list',
+                                        }).then(res => {
+                                            const od = res.data.admins
+                                            setAdmins({ ...admins, data: od })
+                                            console.log('res')
+                                            console.log(res.data)
+                                            console.log('admins')
+                                            console.log(admins.data)
+                                        })
+                                    }
+                                }
+                                );
 
                             }, 600);
                         }),
+
                     onRowDelete: oldData =>
                         new Promise(resolve => {
                             setTimeout(() => {
                                 resolve();
-                                const data = [...admins.data];
-                                data.splice(data.indexOf(oldData), 1);
-                                setAdmins({ ...admins, data });
 
-                                // axios.post('/api/admins', {
-                                //     id: newData.id, 
-                                //     name: newData.name, 
-                                //     department: newData.department
-                                // })
-                                //     .then(res => {
-                                //         // console.log(props.title)
-                                //         // console.log(props.content)
-                                //     }).catch(err => {
-                                //         console.log(err)
-                                //     }
                                 const params = new URLSearchParams();
                                 params.append('contentAdmin_id', oldData.admin_id);
                                 axios({
@@ -112,14 +96,24 @@ function AdminTable() {
                                     url: '/api/delete_contentAdmin',
                                     data: params
                                 }).then(res => {
-                                    console.log(res.data)
-                                });
+                                    return res.status;
+                                }).then((status)=>{
+                                    if (status === 200) {
+                                        //debug
+                                        axios({
+                                            method: 'post',
+                                            url: '/api/show_contentAdmin_list',
+                                        }).then(res => {
+                                            const od = res.data.admins
+                                            setAdmins({ ...admins, data: od })
+                                        })
+                                    }
+                                })
 
                             }, 600);
                         }),
                 }}
             />
-            {/* <button onClick={f()}>click</button> */}
         </Fragment>
     )
 }

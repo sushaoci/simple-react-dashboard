@@ -5,7 +5,7 @@ import { Layout } from 'antd';
 
 import SideNav from '../SideNav'
 
-import AdminTable from '../../july-six/TableIssue';
+import AdminTable from '../../july-six/AdminTable';
 
 const { Header, Content, Footer } = Layout;
 

@@ -1,22 +1,8 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import 'antd/dist/antd.css';
 import { List } from 'antd';
 
-// const data = [
-//   {
-//     title: 'Ant Design Title 1',
-//   },
-//   {
-//     title: 'Ant Design Title 2',
-//   },
-//   {
-//     title: 'Ant Design Title 3',
-//   },
-//   {
-//     title: 'Ant Design Title 4',
-//   },
-
-// ];
+// get data from its parent component and show the information
 
 function InformTable(props) {
 
@@ -25,7 +11,9 @@ function InformTable(props) {
         itemLayout="horizontal"
         dataSource={props.data}
         renderItem={item => (
-          <List.Item>
+          <List.Item
+            extra={item.time}
+          >
             <List.Item.Meta
               title={item.title}
               description={item.content}

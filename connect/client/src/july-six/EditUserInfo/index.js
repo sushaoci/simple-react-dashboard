@@ -3,11 +3,16 @@ import MaterialTable from 'material-table'
 
 import axios from 'axios'
 
+// this page allow you to change user's information 
+// specificly the 'department' of a user
+
 axios.defaults.baseURL = 'http://192.168.1.200:52674'
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 axios.defaults.headers.get['Content-Type'] = 'application/json; charset=utf-8';
 
 function InfoTable() {
+  
+  // define the columns of the info table
   const [infos, setInfos] = useState({
     columns: [
       { title: 'User_id', field: 'user_id', editable: "never" },
@@ -18,10 +23,6 @@ function InfoTable() {
   });
 
   useEffect(() => {
-    // let data = {
-    //     url: "/api/actors",
-    //     method: "get"
-    // }
     const params = new URLSearchParams();
     axios({
       method: 'post',
@@ -44,49 +45,42 @@ function InfoTable() {
       options={{
         pageSize: 10,
       }}
-      title="修改用户信息"
+      title="Edit Information"
       columns={infos.columns}
       data={infos.data}
       editable={{
         onRowUpdate: (newData, oldData) =>
-          new Promise((resolve, reject) => {
+          new Promise(resolve => {
             setTimeout(() => {
               {
-                // console.log(oldData)
-                // console.log(newData)
-                const data = infos.data;
-                const index = data.indexOf(oldData);
-                data[index] = newData;
-                setInfos({ ...infos, data }, () => resolve());
                 resolve()
 
-
                 const params = new URLSearchParams();
-                // params.append('user_id', data[index].user_id);
-                // params.append('school', data[index].school);
                 params.append('user_id', newData.user_id);
                 params.append('school', newData.school);
                 axios({
                   method: 'post',
                   url: '/api/modify_profile_by_super',
                   data: params
-                });
-
-                axios({
-                  method: 'post',
-                  url: '/api/show_user_profile_for_superAdmin',
-                }).then(res => {
-                  const od = res.data.users
-                  setInfos({ ...infos, data: od })
-                  console.log("get2")
-                  console.log(res.data.users)
-
-                }).catch(err => {
-                  console.log(err)
-                })
-
+                }).then(res=>{
+                    return (res.status)
+                }).then((status)=>{
+                    if (status === 200) {
+                        //debug
+                        axios({
+                            method: 'post',
+                            url: '/api/show_user_profile_for_superAdmin',
+                          }).then(res => {
+                            const od = res.data.users
+                            setInfos({ ...infos, data: od })
+          
+                          }).catch(err => {
+                            console.log(err)
+                          })
+                    }
+                })      
               }
-            }, 1000)
+            }, 600)
           }),
       }}
     />
