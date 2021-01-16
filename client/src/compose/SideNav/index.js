@@ -23,7 +23,7 @@ function SideNav() {
                     title={
                         <span>
                             <Icon type="user" />
-                            NAV BAR
+                            Administrator
                     </span>
                     }
                 >

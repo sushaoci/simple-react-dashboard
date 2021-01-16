@@ -1,3 +1,0 @@
-- promise(resolve,reject)=>youtube视频
-- component的willmount或didmount / fuction的useEffect
-- 表格的一些限定
